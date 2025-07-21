@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SSA Agent ID Generator</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #0a0a0a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    canvas {
+      border: 2px solid #00ffcc;
+      margin-top: 20px;
+      background-color: #111;
+    }
+    input, select, button {
+      margin: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      font-family: inherit;
+    }
+    button {
+      background-color: #00ffcc;
+      color: black;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🕵 SSA Agent ID Card Generator</h1>
+  <input type="text" id="name" placeholder="Agent Name (e.g., Oojas)">
+  <input type="text" id="code" placeholder="Code Number (e.g., AG-027)">
+  <input type="text" id="rank" placeholder="Rank (e.g., Commander)">
+  <input type="text" id="division" placeholder="Division (e.g., SciSpy)">
+  <input type="text" id="username" placeholder="Discord Username (e.g., oojas_gamer_op#0000)">
+  <input type="url" id="avatar" placeholder="Avatar URL (leave blank for default)">
+  <button onclick="generateCard()">Generate ID Card</button>
+  <button onclick="downloadCard()">Download as PNG</button>
+
+  <canvas id="cardCanvas" width="600" height="300"></canvas>
+
+  <script>
+    function generateCard() {
+      const name = document.getElementById('name').value;
+      const code = document.getElementById('code').value;
+      const rank = document.getElementById('rank').value;
+      const division = document.getElementById('division').value;
+      const username = document.getElementById('username').value;
+      const avatarURL = document.getElementById('avatar').value || 'https://cdn-icons-png.flaticon.com/512/3665/3665923.png';
+
+      const canvas = document.getElementById('cardCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Background
+        ctx.fillStyle = '#111';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Border and title
+        ctx.strokeStyle = '#00ffcc';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+        ctx.fillStyle = '#00ffcc';
+        ctx.font = 'bold 24px Courier';
+        ctx.fillText('SSA OFFICIAL ID CARD', 180, 40);
+
+        // Avatar
+        ctx.drawImage(img, 30, 80, 100, 100);
+
+        // Info
+        ctx.fillStyle = 'white';
+        ctx.font = '18px Courier';
+        ctx.fillText(`Name      : ${name}`, 160, 90);
+        ctx.fillText(`Code      : ${code}`, 160, 120);
+        ctx.fillText(`Rank      : ${rank}`, 160, 150);
+        ctx.fillText(`Division  : ${division}`, 160, 180);
+        ctx.fillText(`Username  : ${username}`, 160, 210);
+
+        ctx.font = '12px Courier';
+        ctx.fillStyle = '#00ffcc';
+        ctx.fillText('Issued by: SSA - Secret Spy Association • 2020', 160, 250);
+      };
+      img.src = avatarURL;
+    }
+
+    function downloadCard() {
+      const canvas = document.getElementById('cardCanvas');
+      const link = document.createElement('a');
+      link.download = 'ssa_agent_id.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+</body>
+</html>
