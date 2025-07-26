@@ -13,27 +13,28 @@
       align-items: center;
       padding: 20px;
     }
-<style>
-  #copyBtn {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #202225;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  #copyBtn:hover {
-    background-color: #5865F2; /* Discord Blue */
-  }
-</style>
+
+    #copyBtn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #202225;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #copyBtn:hover {
+      background-color: #5865F2; /* Discord Blue */
+    }
 
     canvas {
       border: 2px solid #00ffcc;
       margin-top: 20px;
       background-color: #111;
     }
+
     input, select, button {
       margin: 5px;
       padding: 10px;
@@ -41,6 +42,7 @@
       border: none;
       font-family: inherit;
     }
+
     button {
       background-color: #00ffcc;
       color: black;
@@ -61,8 +63,8 @@
 
   <canvas id="cardCanvas" width="600" height="300"></canvas>
 
-<button id="copyBtn">📋 Copy to Clipboard</button>
-<p id="copyStatus" style="font-size: 14px;"></p>
+  <button id="copyBtn">📋 Copy to Clipboard</button>
+  <p id="copyStatus" style="font-size: 14px;"></p>
 
   <script>
     function generateCard() {
@@ -120,24 +122,20 @@
       link.href = canvas.toDataURL();
       link.click();
     }
-document.getElementById('copyBtn').addEventListener('click', async () => {
-  const canvas = document.getElementById('cardCanvas'); // ✅ Make sure this ID is correct
 
-  try {
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-
-    await navigator.clipboard.write([
-      new ClipboardItem({ 'image/png': blob })
-    ]);
-
-    document.getElementById('copyStatus').textContent = "✅ Image copied to clipboard!";
-  } catch (err) {
-    console.error("Copy failed:", err);
-    document.getElementById('copyStatus').textContent = "❌ Failed to copy. Try again.";
-  }
-});
-
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const canvas = document.getElementById('cardCanvas');
+      try {
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+        document.getElementById('copyStatus').textContent = "✅ Image copied to clipboard!";
+      } catch (err) {
+        console.error("Copy failed:", err);
+        document.getElementById('copyStatus').textContent = "❌ Failed to copy. Try again.";
+      }
+    });
   </script>
-
 </body>
 </html>
